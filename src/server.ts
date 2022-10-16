@@ -26,7 +26,7 @@ app.get("/eat/carrot", (req, res) => {
   });
 });
 
-app.get("/echo/:exampleRouteParameter", (req, res) => {
+app.get<{ exampleRouteParameter: string}>("/echo/:exampleRouteParameter", (req, res) => {
   const echoContent = req.params.exampleRouteParameter;
   res.json({
     echo: echoContent,
@@ -34,7 +34,7 @@ app.get("/echo/:exampleRouteParameter", (req, res) => {
   });
 });
 
-app.get("/multiply/:numOne/:numTwo", (req, res) => {
+app.get<{ numOne: string, numTwo: string}>("/multiply/:numOne/:numTwo", (req, res) => {
   /**
    * Note that `numOne` and `numTwo` are both typed as string.
    * (Hover over with your mouse to see!)
@@ -68,6 +68,40 @@ app.get<{ name: string }>("/happy-birthday/:name", (req, res) => {
       `Happy birthday dear ${req.params.name}`,
       "Happy birthday to you!",
     ],
+  });
+});
+
+app.get<{message: string}>("/shout/:message", (req, res) => {
+  res.json({
+    "shout": req.params.message.toUpperCase(),
+    "result": `I am shouting back to you: ${req.params.message.toUpperCase()}`,
+  })
+});
+
+app.get<{a: string, b: string, c: string}>("/addition/:a/:b/:c", (req, res) => {
+  const sum: number = parseInt(req.params.a) + parseInt(req.params.b) + parseInt(req.params.c);
+  res.json({
+    "original": `${req.params.a} + ${req.params.b} + ${req.params.c}`,
+    "result": sum,
+  });
+});
+
+app.get<{a: string, b: string}>("/addition/:a/:b", (req, res) => {
+  const sum: number = parseInt(req.params.a) + parseInt(req.params.b);
+  res.json({
+    "original": `${req.params.a} + ${req.params.b}`,
+    "result": sum,
+  });
+});
+
+app.get<{food: string}>("/eat/:food", (req, res) => {
+  const vowels: string[] = ['A', 'E', 'I', 'O', 'U', 'a', 'e', 'i', 'o', 'u'];
+  let an: string = 'a';
+  if (vowels.includes(req.params.food.charAt(0))) {
+    an = 'an';
+  };
+  res.json({
+    message: `Yum yum - you ate ${an} ${req.params.food}!`,
   });
 });
 
