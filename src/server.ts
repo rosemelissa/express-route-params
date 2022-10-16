@@ -26,29 +26,35 @@ app.get("/eat/carrot", (req, res) => {
   });
 });
 
-app.get<{ exampleRouteParameter: string}>("/echo/:exampleRouteParameter", (req, res) => {
-  const echoContent = req.params.exampleRouteParameter;
-  res.json({
-    echo: echoContent,
-    message: `I am echoing back to you: ${echoContent}`,
-  });
-});
+app.get<{ exampleRouteParameter: string }>(
+  "/echo/:exampleRouteParameter",
+  (req, res) => {
+    const echoContent = req.params.exampleRouteParameter;
+    res.json({
+      echo: echoContent,
+      message: `I am echoing back to you: ${echoContent}`,
+    });
+  }
+);
 
-app.get<{ numOne: string, numTwo: string}>("/multiply/:numOne/:numTwo", (req, res) => {
-  /**
-   * Note that `numOne` and `numTwo` are both typed as string.
-   * (Hover over with your mouse to see!)
-   *
-   * Route params are, by default, typed as strings when they
-   * are parsed by Express.
-   */
-  const { numOne, numTwo } = req.params;
-  const multiplication = parseInt(numOne) * parseInt(numTwo);
-  res.json({
-    original: `${numOne} x ${numTwo}`,
-    result: multiplication,
-  });
-});
+app.get<{ numOne: string; numTwo: string }>(
+  "/multiply/:numOne/:numTwo",
+  (req, res) => {
+    /**
+     * Note that `numOne` and `numTwo` are both typed as string.
+     * (Hover over with your mouse to see!)
+     *
+     * Route params are, by default, typed as strings when they
+     * are parsed by Express.
+     */
+    const { numOne, numTwo } = req.params;
+    const multiplication = parseInt(numOne) * parseInt(numTwo);
+    res.json({
+      original: `${numOne} x ${numTwo}`,
+      result: multiplication,
+    });
+  }
+);
 
 /**
  * `app.get` can take a type argument.
@@ -71,35 +77,39 @@ app.get<{ name: string }>("/happy-birthday/:name", (req, res) => {
   });
 });
 
-app.get<{message: string}>("/shout/:message", (req, res) => {
+app.get<{ message: string }>("/shout/:message", (req, res) => {
   res.json({
-    "shout": req.params.message.toUpperCase(),
-    "result": `I am shouting back to you: ${req.params.message.toUpperCase()}`,
-  })
-});
-
-app.get<{a: string, b: string, c: string}>("/addition/:a/:b/:c", (req, res) => {
-  const sum: number = parseInt(req.params.a) + parseInt(req.params.b) + parseInt(req.params.c);
-  res.json({
-    "original": `${req.params.a} + ${req.params.b} + ${req.params.c}`,
-    "result": sum,
+    shout: req.params.message.toUpperCase(),
+    result: `I am shouting back to you: ${req.params.message.toUpperCase()}`,
   });
 });
 
-app.get<{a: string, b: string}>("/addition/:a/:b", (req, res) => {
+app.get<{ a: string; b: string; c: string }>(
+  "/addition/:a/:b/:c",
+  (req, res) => {
+    const sum: number =
+      parseInt(req.params.a) + parseInt(req.params.b) + parseInt(req.params.c);
+    res.json({
+      original: `${req.params.a} + ${req.params.b} + ${req.params.c}`,
+      result: sum,
+    });
+  }
+);
+
+app.get<{ a: string; b: string }>("/addition/:a/:b", (req, res) => {
   const sum: number = parseInt(req.params.a) + parseInt(req.params.b);
   res.json({
-    "original": `${req.params.a} + ${req.params.b}`,
-    "result": sum,
+    original: `${req.params.a} + ${req.params.b}`,
+    result: sum,
   });
 });
 
-app.get<{food: string}>("/eat/:food", (req, res) => {
-  const vowels: string[] = ['A', 'E', 'I', 'O', 'U', 'a', 'e', 'i', 'o', 'u'];
-  let an: string = 'a';
+app.get<{ food: string }>("/eat/:food", (req, res) => {
+  const vowels: string[] = ["A", "E", "I", "O", "U", "a", "e", "i", "o", "u"];
+  let an = "a";
   if (vowels.includes(req.params.food.charAt(0))) {
-    an = 'an';
-  };
+    an = "an";
+  }
   res.json({
     message: `Yum yum - you ate ${an} ${req.params.food}!`,
   });
